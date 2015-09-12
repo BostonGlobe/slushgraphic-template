@@ -11,9 +11,9 @@ var replace = require('gulp-replace');
 gulp.task('css-dev', function () {
 	gulp.src('src/css/config.styl')
 		.pipe(plumber({
-	        errorHandler: function (err) { console.log(err); this.emit('end'); }
-	    }))
-        .pipe(stylus())
+				errorHandler: function (err) { console.log(err); this.emit('end'); }
+			}))
+		.pipe(stylus())
 		.pipe(autoprefixer())
 		.pipe(rename('main.css'))
 		.pipe(gulp.dest('dist/dev/css'))
@@ -23,10 +23,10 @@ gulp.task('css-dev', function () {
 //compile all styl and autoprefix, and minify
 gulp.task('css-prod', function() {
 	gulp.src('src/css/config.styl')
-        .pipe(stylus())
+		.pipe(stylus())
 		.pipe(autoprefixer())
 		.pipe(replace(/\.\.\/assets/g, 'assets'))
 		.pipe(minifycss())
 		.pipe(rename('main.css'))
-		.pipe(gulp.dest('.tmp/css'))	
+		.pipe(gulp.dest('.tmp/css'))
 });
