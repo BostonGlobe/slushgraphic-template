@@ -1,4 +1,4 @@
-var gulp = require('gulp');
+var gulp    = require('gulp');
 var changed = require('gulp-changed');
 
 var src = 'src/assets/**/*';

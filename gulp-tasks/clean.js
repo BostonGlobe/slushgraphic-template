@@ -1,5 +1,5 @@
 var gulp = require('gulp');
-var del = require('del');
+var del  = require('del');
 
 //clear all dev folders and sass cache
 gulp.task('clean-dev', function(cb) {
