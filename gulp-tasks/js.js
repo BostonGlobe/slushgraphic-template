@@ -1,31 +1,40 @@
-var gulp = require('gulp');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
-var browserSync = require('browser-sync');
-var webpack = require('webpack-stream');
+var gulp          = require('gulp');
+var rename        = require('gulp-rename');
+var browserSync   = require('browser-sync');
+var webpackStream = require('webpack-stream');
+var webpack       = require('webpack');
 
 var config = {
+	watch: false,
 	module: {
 		loaders: [
 			{ test: /\.csv?$/, loader: 'dsv-loader' },
 			{ test: /\.json$/, loader: 'json-loader' },
-			{ test: /\.js$/, exclude: /node_modules/, loader: 'babel'}
+			{ test: /\.js$/,   loader: 'babel', exclude: /node_modules/ }
 		]
 	}
 };
 
 gulp.task('js-dev', function() {
+
+	config.plugins = [];
+
 	return gulp.src('src/js/main.js')
-		.pipe(webpack(config))
+		.pipe(webpackStream(config))
 		.pipe(rename('bundle.js'))
 		.pipe(gulp.dest('dist/dev/js'))
 		.pipe(browserSync.reload({stream:true}));
 });
 
 gulp.task('js-prod', function() {
+
+	config.plugins = [
+		new webpack.optimize.UglifyJsPlugin(),
+		new webpack.optimize.DedupePlugin()
+	];
+
 	return gulp.src('src/js/main.js')
-		.pipe(webpack(config))
-		.pipe(uglify())
+		.pipe(webpackStream(config))
 		.pipe(rename('bundle.js'))
-		.pipe(gulp.dest('.tmp/js'))
+		.pipe(gulp.dest('.tmp/js'));
 });
